@@ -3,7 +3,7 @@ import * as THREE from 'three'
 import { RGBADepthPacking } from 'three'
 import clickSvgUrl from '../assets/click.svg?url'
 
-const COVER_URL = '/kraft/cover.svg'
+const COVER_URL = `${import.meta.env.BASE_URL}kraft/cover.svg`
 
 export type KraftBowApi = { dispose: () => void }
 
