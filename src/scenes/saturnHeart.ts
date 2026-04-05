@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
-const HEART_TEX_RIGHT = 'public/unlock/zyronmatrix_export_1775333639890.svg'
-const HEART_TEX_LEFT = 'public/unlock/zyronmatrix_export_1775334780531.svg'
+const HEART_TEX_RIGHT = `${import.meta.env.BASE_URL}unlock/zyronmatrix_export_1775333639890.svg`
+const HEART_TEX_LEFT = `${import.meta.env.BASE_URL}unlock/zyronmatrix_export_1775334780531.svg`
 
 export type SaturnHeartApi = {
   dispose: () => void
