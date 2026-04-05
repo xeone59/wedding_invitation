@@ -170,6 +170,7 @@ export function initKraftBowInvitation(root: HTMLElement): KraftBowApi {
     ctx.fillText('Friday, the tenth of April', cx, 1750)
     ctx.font = 'normal 45px "Playfair Display", serif'
     ctx.fillText('at five o’clock in the evening', cx, 1850)
+    ctx.fillText('Phoenix, AZ', cx, 1930)
 
     bctx.fillStyle = '#808080'
     bctx.fillRect(0, 0, w, h)
