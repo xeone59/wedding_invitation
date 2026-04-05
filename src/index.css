@@ -1,0 +1,652 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.font-preload-bow {
+  font-family: 'Pinyon Script', cursive;
+  visibility: hidden;
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background: #030304;
+  color: #e8e4dc;
+  font-family:
+    'Cormorant Garamond',
+    'Times New Roman',
+    Times,
+    serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  min-height: 100%;
+}
+
+.journey {
+  position: relative;
+  background: #000;
+}
+
+.journey-panel--unlock {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.journey-panel--unlock:not(.journey-panel--unlock--heart) {
+  touch-action: none;
+}
+
+.journey-panel__mount {
+  position: absolute;
+  inset: 0;
+}
+
+.journey-panel__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100dvh;
+  z-index: 0;
+}
+
+.journey-panel--moon {
+  position: relative;
+}
+
+.journey-panel--kraft {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.journey-panel--thank-you {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Kraft + bow WebGL scene */
+.kraft-invite-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #030303;
+  font-family: 'Playfair Display', serif;
+}
+
+.kraft-invite__font-preload {
+  font-family: 'Pinyon Script', cursive;
+  visibility: hidden;
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.kraft-invite__webgl {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.kraft-invite__loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  background: #050505;
+  color: #d4af37;
+  transition: opacity 1s ease-in-out;
+}
+
+.kraft-invite__spinner {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-top-color: #d4af37;
+  border-radius: 50%;
+  animation: bowSpin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+.kraft-invite__loader-text {
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.kraft-invite__hint {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  letter-spacing: 3px;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1s ease;
+  font-family: 'Playfair Display', serif;
+}
+
+/* click.svg：贴在 Kraft 屏 section 上，约在请柬右下外侧（不压在 WebGL 牛皮纸面上） */
+.journey-panel--kraft > .kraft-click-cue {
+  position: absolute;
+  z-index: 10450;
+  right: 32%;
+  bottom: 22%;
+  transform: translate(22%, 38%);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.92));
+}
+
+.journey-panel--kraft .kraft-click-cue__inner img {
+  width: clamp(30px, 7vw, 46px);
+  height: auto;
+  display: block;
+}
+
+/* 向下箭头（无圆形底板与阴影）；月亮页 sticky + Kraft 屏 */
+.journey-gold-cue {
+  position: absolute;
+  right: clamp(0.65rem, 3vw, 1.35rem);
+  bottom: clamp(0.65rem, 3vw, 1.35rem);
+  z-index: 100;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  background: transparent;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.journey-panel--kraft .journey-gold-cue {
+  z-index: 10200;
+}
+
+.journey-gold-cue__chevron {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-right: 2px solid rgba(212, 175, 55, 0.92);
+  border-bottom: 2px solid rgba(212, 175, 55, 0.92);
+  transform: rotate(45deg);
+  pointer-events: none;
+  animation: journeyGoldArrowBounce 1.85s ease-in-out infinite;
+}
+
+.journey-gold-cue:hover .journey-gold-cue__chevron {
+  border-color: rgba(244, 220, 160, 0.98);
+}
+
+.journey-gold-cue:focus-visible {
+  outline: 2px solid rgba(212, 175, 55, 0.65);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+@keyframes journeyGoldArrowBounce {
+  0%,
+  100% {
+    transform: translateY(0) rotate(45deg);
+  }
+  50% {
+    transform: translateY(7px) rotate(45deg);
+  }
+}
+
+/* Thank you — journey end */
+.thank-you {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 5vw, 3rem);
+  background: radial-gradient(ellipse 120% 80% at 50% 20%, #1a1512 0%, #0a0908 45%, #030304 100%);
+  overflow: hidden;
+}
+
+.thank-you__veil {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 40% 60%, rgba(200, 190, 220, 0.06) 0%, transparent 50%);
+  mix-blend-mode: screen;
+}
+
+.thank-you__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+  max-width: 42rem;
+  text-align: center;
+}
+
+/* 无边框、无卡片阴影；略放大。黑底 PNG 与页面背景融合 */
+.thank-you__cat {
+  width: min(94vw, 36rem);
+  max-height: min(58vh, 38rem);
+  object-fit: contain;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  mix-blend-mode: lighten;
+}
+
+.thank-you__eyebrow {
+  margin: 0;
+  font-family: 'Cormorant Infant', 'Cormorant Garamond', serif;
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.35em;
+  text-transform: lowercase;
+  color: rgba(232, 228, 220, 0.5);
+}
+
+.thank-you__title {
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(2.75rem, 8vw, 4.25rem);
+  letter-spacing: 0.08em;
+  color: #f5f1ea;
+  text-shadow: 0 0 40px rgba(220, 210, 255, 0.15);
+}
+
+.thank-you__line {
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.05rem, 2.8vw, 1.35rem);
+  letter-spacing: 0.06em;
+  color: rgba(228, 224, 216, 0.72);
+}
+
+.journey-scroll-hint {
+  pointer-events: none;
+  position: absolute;
+  bottom: 1.35rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(237, 27, 108, 0.75);
+  text-shadow: 0 0 24px rgba(237, 27, 108, 0.35);
+  animation: journeyHintPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes journeyHintPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.bow-invitation__loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  background: #050505;
+  color: #d4af37;
+  transition: opacity 1s ease-in-out;
+}
+
+.bow-invitation__spinner {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-top-color: #d4af37;
+  border-radius: 50%;
+  animation: bowSpin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes bowSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bow-invitation__loader-text {
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.bow-invitation__hint {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  letter-spacing: 3px;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1s ease;
+  font-family: 'Playfair Display', serif;
+}
+
+.hero {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background-color: #050506;
+}
+
+.hero--journey {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.hero__veil {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 72% 38%,
+    rgba(180, 195, 220, 0.06) 0%,
+    transparent 42%
+  );
+  mix-blend-mode: screen;
+}
+
+.hero__moon-glow {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0.85;
+  background: radial-gradient(
+    circle at 78% 32%,
+    rgba(220, 230, 245, 0.07) 0%,
+    transparent 38%
+  );
+}
+
+.hero__grain {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.hero__veil,
+.hero__moon-glow,
+.hero__grain {
+  z-index: 0;
+}
+
+/* Full-bleed WebGL: same moonlit field as typography — no split “panels”. */
+.hero__canvas-wrap {
+  position: relative;
+  z-index: 1;
+  opacity: 1;
+  animation: canvasReveal 2.4s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+.hero__canvas-wrap--fullscreen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Soft luminous haze over the sculpture (朦胧 + 与文字共用氛围) */
+.hero__haze {
+  pointer-events: none;
+  position: absolute;
+  inset: -15%;
+  z-index: 2;
+  background:
+    radial-gradient(
+      ellipse 92% 78% at 66% 38%,
+      rgba(238, 242, 255, 0.16) 0%,
+      transparent 54%
+    ),
+    radial-gradient(
+      ellipse 58% 52% at 84% 46%,
+      rgba(215, 225, 248, 0.11) 0%,
+      transparent 48%
+    );
+  filter: blur(56px);
+  mix-blend-mode: screen;
+  opacity: 0.88;
+}
+
+.hero__text-layer {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.text-panel {
+  position: relative;
+  z-index: 0;
+  width: min(32vw, 420px);
+  max-width: 34%;
+  margin: 0 0 0 clamp(1.25rem, 3.2vw, 2.85rem);
+  padding: clamp(1.5rem, 4vw, 3.25rem) clamp(0.5rem, 1.2vw, 1rem)
+    clamp(1.5rem, 4vw, 3.25rem) 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0;
+  background: transparent;
+  box-shadow: none;
+  /* Stay readable even if keyframe animation is skipped (GPU / a11y quirks) */
+  opacity: 1;
+  animation: textReveal 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.text-panel__names {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
+.text-panel__names--solo {
+  gap: clamp(0.35rem, 1.2vw, 0.65rem);
+}
+
+.text-panel__name {
+  display: block;
+  font-weight: 400;
+  font-size: clamp(2.35rem, 4.2vw, 3.65rem);
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  color: #f7f4ed;
+  text-shadow:
+    0 0 56px rgba(210, 220, 245, 0.35),
+    0 0 24px rgba(255, 255, 255, 0.18),
+    0 0 2px rgba(255, 255, 255, 0.4);
+  opacity: 1;
+  transform: translate3d(0, 14px, 0);
+}
+
+.text-panel__name--a {
+  animation: nameIn 1.85s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
+}
+
+.text-panel__name--b {
+  animation: nameIn 1.85s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
+}
+
+.wedding-canvas {
+  position: absolute !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: none;
+  background: transparent !important;
+}
+
+.hero__canvas-wrap--draggable {
+  cursor: grab;
+  touch-action: none;
+}
+
+.hero__canvas-wrap--draggable:active {
+  cursor: grabbing;
+}
+
+.canvas-fallback {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 70% 45%,
+    #12141a 0%,
+    #08090c 55%
+  );
+  opacity: 1;
+  animation: canvasReveal 1.2s ease forwards;
+}
+
+.scroll-spacer {
+  height: 220vh;
+  pointer-events: none;
+}
+
+@keyframes textReveal {
+  from {
+    filter: blur(8px);
+  }
+  to {
+    filter: blur(0);
+  }
+}
+
+@keyframes nameIn {
+  from {
+    transform: translate3d(0, 18px, 0);
+    letter-spacing: 0.12em;
+    filter: blur(5px);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    letter-spacing: 0.04em;
+    filter: blur(0);
+  }
+}
+
+@keyframes canvasReveal {
+  from {
+    transform: scale(0.97);
+    filter: brightness(0.35);
+  }
+  to {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+@media (max-width: 960px) {
+  .hero__text-layer {
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: clamp(1.75rem, 6vw, 2.75rem);
+  }
+
+  .text-panel {
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    padding-left: clamp(1.25rem, 5vw, 2rem);
+    padding-right: clamp(1.25rem, 5vw, 2rem);
+    padding-top: clamp(0.5rem, 2vw, 1rem);
+    align-items: center;
+    text-align: center;
+  }
+
+  .text-panel__names {
+    align-items: center;
+  }
+
+  .hero__haze {
+    inset: -25% -20%;
+    opacity: 0.75;
+    filter: blur(44px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-panel,
+  .text-panel__name,
+  .hero__canvas-wrap,
+  .hero__haze,
+  .journey-gold-cue__chevron {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .journey-gold-cue__chevron {
+    transform: rotate(45deg) !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
